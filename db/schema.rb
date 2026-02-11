@@ -10,8 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_11_023340) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_11_031914) do
   create_table "actors", force: :cascade do |t|
+    t.integer "agent_id"
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.index ["agent_id"], name: "index_actors_on_agent_id"
+  end
+
+  create_table "agents", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
@@ -43,6 +51,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_11_023340) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "actors", "agents"
   add_foreign_key "movies", "studios"
   add_foreign_key "roles", "actors"
   add_foreign_key "roles", "movies"

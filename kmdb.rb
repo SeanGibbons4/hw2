@@ -99,13 +99,15 @@ puts ""
 
 # Query the movies data and loop through the results to display the movies output.
 # TODO!
-warner = Studio.create!(naem: "Warner Bros.")
+warner = Studio.create!(name: "Warner Bros.")
 
 begins = Movie.create!(title: "Batman Begins", year_released: 2005, rated: "PG-13", studio: warner)
 knight = Movie.create!(title: "The Dark Knight", year_released: 2008, rated: "PG-13", studio: warner)
 rises = Movie.create!(title: "The Dark Knight Rises", year_released: 2012, rated: "PG-13", studio: warner)
 
-bale = Actor.create!(name: "Christian Bale", agent_id: nil)
+caa = Agent.create(name: "CAA")
+
+bale = Actor.create!(name: "Christian Bale", agent_id: caa)
 caine = Actor.create!(name: "Michael Caine", agent_id: nil)
 neeson = Actor.create!(name: "Liam Neeson", agent_id: nil)
 holmes = Actor.create!(name: "Katie Holmes", agent_id: nil)
@@ -115,7 +117,7 @@ eckhart = Actor.create!(name: "Aaron Eckhart", agent_id: nil)
 gyllenhaal = Actor.create!(name: "Maggie Gyllenhaal", agent_id: nil)
 hardy = Actor.create!(name: "Tom Hardy", agent_id: nil)
 gordon_levitt = Actor.create!(name: "Joseph Gordon-Levitt", agent_id: nil)
-hathaaway = Actor.create!(name: "Anne Hathaway", agent_id: nil)
+hathaway = Actor.create!(name: "Anne Hathaway", agent_id: nil)
 
 Role.create!(movie: begins, actor: bale, character_name: "Bruce Wayne")
 Role.create!(movie: begins, actor: caine, character_name: "Alfred")
@@ -134,6 +136,9 @@ Role.create!(movie: rises, actor: oldman, character_name: "Commissioner Gordon")
 Role.create!(movie: rises, actor: hardy, character_name: "Bane")
 Role.create!(movie: rises, actor: gordon_levitt, character_name: "John Blake")
 Role.create!(movie: rises, actor: hathaway, character_name: "Selina Kyle")
+
+puts Agent.first.inspect
+puts Actor.find_by(name: "Christian Bale", agent: caa).inspect
 
 
 # Prints a header for the cast output

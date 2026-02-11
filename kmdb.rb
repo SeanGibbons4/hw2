@@ -91,33 +91,27 @@ Agent.destroy_all
 # Insert data into the database that reflects the sample data shown above.
 # Do not use hard-coded foreign key IDs.
 # TODO!
-
-# Prints a header for the movies output
-puts "Movies"
-puts "======"
-puts ""
-
-# Query the movies data and loop through the results to display the movies output.
-# TODO!
+ 
 warner = Studio.create!(name: "Warner Bros.")
 
 begins = Movie.create!(title: "Batman Begins", year_released: 2005, rated: "PG-13", studio: warner)
 knight = Movie.create!(title: "The Dark Knight", year_released: 2008, rated: "PG-13", studio: warner)
 rises = Movie.create!(title: "The Dark Knight Rises", year_released: 2012, rated: "PG-13", studio: warner)
 
-caa = Agent.create(name: "CAA")
+caa = Agent.create!(name: "CAA")
 
-bale = Actor.create!(name: "Christian Bale", agent_id: caa)
-caine = Actor.create!(name: "Michael Caine", agent_id: nil)
-neeson = Actor.create!(name: "Liam Neeson", agent_id: nil)
-holmes = Actor.create!(name: "Katie Holmes", agent_id: nil)
-oldman = Actor.create!(name: "Gary Oldman", agent_id: nil)
-ledger = Actor.create!(name: "Heath Ledger", agent_id: nil)
-eckhart = Actor.create!(name: "Aaron Eckhart", agent_id: nil)
-gyllenhaal = Actor.create!(name: "Maggie Gyllenhaal", agent_id: nil)
-hardy = Actor.create!(name: "Tom Hardy", agent_id: nil)
-gordon_levitt = Actor.create!(name: "Joseph Gordon-Levitt", agent_id: nil)
-hathaway = Actor.create!(name: "Anne Hathaway", agent_id: nil)
+bale = Actor.create!(name: "Christian Bale", agent: caa)
+caine = Actor.create!(name: "Michael Caine", agent: nil)
+neeson = Actor.create!(name: "Liam Neeson", agent: nil)
+holmes = Actor.create!(name: "Katie Holmes", agent: nil)
+oldman = Actor.create!(name: "Gary Oldman", agent: nil)
+ledger = Actor.create!(name: "Heath Ledger", agent: nil)
+eckhart = Actor.create!(name: "Aaron Eckhart", agent: nil)
+gyllenhaal = Actor.create!(name: "Maggie Gyllenhaal", agent: nil)
+hardy = Actor.create!(name: "Tom Hardy", agent: nil)
+gordon_levitt = Actor.create!(name: "Joseph Gordon-Levitt", agent: nil)
+hathaway = Actor.create!(name: "Anne Hathaway", agent: nil)
+
 
 Role.create!(movie: begins, actor: bale, character_name: "Bruce Wayne")
 Role.create!(movie: begins, actor: caine, character_name: "Alfred")
@@ -138,8 +132,20 @@ Role.create!(movie: rises, actor: gordon_levitt, character_name: "John Blake")
 Role.create!(movie: rises, actor: hathaway, character_name: "Selina Kyle")
 
 puts Agent.first.inspect
-puts Actor.find_by(name: "Christian Bale", agent: caa).inspect
+puts Actor.find_by(name: "Christian Bale", agent: caa.id).inspect
 
+
+# Prints a header for the movies output
+puts "Movies"
+puts "======"
+puts ""
+
+# Query the movies data and loop through the results to display the movies output.
+# TODO!
+Movie.all.each do |movie|
+  studio = Studio.find_by(id: movie.studio_id)
+  puts "#{movie.title}\t#{movie.year_released}\t#{movie.rated}\t#{studio.name}"
+end
 
 # Prints a header for the cast output
 puts ""
@@ -149,6 +155,14 @@ puts ""
 
 # Query the cast data and loop through the results to display the cast output for each movie.
 # TODO!
+Movie.all.each do |movie|
+  roles = Role.where(movie_id: movie.id)
+
+  roles.each do |role|
+    actor = Actor.find_by(id: role.actor_id)
+    puts "#{movie.title}\t#{actor.name}\t#{role.character_name}"
+  end
+end
 
 # Prints a header for the agent's list of represented actors output
 puts ""
@@ -158,3 +172,10 @@ puts ""
 
 # Query the actor data and loop through the results to display the agent's list of represented actors output.
 # TODO!
+
+Agent.all.each do |agent|
+  actors = Actor.where(agent_id: agent.id)
+  actors.each do |actor|
+    puts "\t#{actor.name}"
+  end
+end
